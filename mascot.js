@@ -304,12 +304,10 @@
       if (root.console) console.warn('Vannessa mascot: ' + err.message + ' — using placeholder');
       return placeholder();
     };
-    return fetch('/mascot/vannessa.riv', { cache: 'no-cache' }).then(res => {
-      if (res.status !== 200) return placeholder();    // 204 = no character file yet
-      return Promise.all([res.arrayBuffer(), loadRuntime()])
-        .then(([buf, R]) => RiveBackend(stage, buf, R))
-        .catch(fallback);
-    }, placeholder);
+    // Demo build: no character file ships on static hosting — go straight to the
+    // placeholder instead of probing (keeps the console free of a 404).
+    void fallback; void loadRuntime; void RiveBackend;
+    return Promise.resolve(placeholder());
   }
 
   const M = {
